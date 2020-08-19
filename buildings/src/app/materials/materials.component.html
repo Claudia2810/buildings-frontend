@@ -1,0 +1,89 @@
+<div class="container p-4">
+    <h2 class="p-2">Listado Materiales</h2>
+    <button class="btn btn-primary" (click)="addMaterials()">Agregar</button>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Nombre</th>
+          <th>Unidad de Medida</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Total de producto</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of materialsList">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.unit_measure}}</td>
+            <td>{{item.price}}</td>
+            <td>{{item.stock}}</td>
+            <td>{{item.total_product}}</td>
+            <td data-header="Acciones">
+                <button class="btn rounded btn-danger" tooltip="Eliminar material" [disabled]="isLoading['delete'] === true" (click)="removeMaterials(item.id)">
+                    <i class="fas fa-trash-alt" *ngIf="isLoading['delete'] === false"></i>
+                </button> &nbsp;
+                        
+                <button class="btn rounded btn-warning" tooltip="Editar material" [disabled]="isLoading['put'] === true" (click)="editMaterials(item.id)">
+                    <i class="far fa-edit" *ngIf="isLoading['delete'] === false"></i>
+                </button>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+<!-- Form to register a new materials -->
+<div class="container" *ngIf="isLoading['form'] === false && isLoading['put'] === false">
+    <form #createForm="ngForm" novalidate (ngSubmit)="createMaterials(createForm)">
+        <div class="form-group">
+            <label for="name">Nombre:</label>
+            <input type="text" class="form-control" placeholder="Ingresa el nombre del material" name="name" [ngModel]="create.name" autocomplete="off" #name="ngModel">
+        </div>
+
+        <div class="form-group">
+            <label for="unit_measure">Unidad de Medida:</label>
+            <input type="text" class="form-control" placeholder="Ingresa la unidad de medida" name="unit_measure" [ngModel]="create.unit_measure" autocomplete="off" #unit_measure="ngModel">
+        </div>
+
+        <div class="form-group">
+            <label for="price">Precio:</label>
+            <input type="number" class="form-control" placeholder="Ingresa el precio" name="price" [ngModel]="create.price" autocomplete="off" #price="ngModel">
+        </div>
+
+        <div class="form-group">
+            <label for="stock">Stock:</label>
+            <input type="number" class="form-control" placeholder="Ingresa el stock" name="stock" [ngModel]="create.stock" autocomplete="off" #stock="ngModel">
+        </div>
+        
+        <button class="btn btn-primary">Guardar</button>
+    </form> 
+</div>
+
+<div class="container" *ngIf="isLoading['put'] === true">
+    <form #updateForm="ngForm" novalidate (ngSubmit)="updateMaterials(updateForm, materialsEdit.idEdit)">
+        <div class="form-group">
+            <label for="name">Nombre:</label>
+            <input type="text" class="form-control" placeholder="Ingresa el nombre del material" value="{{materialsEdit.nameEdit}}" name="nameEdit" [ngModel]="materialsEdit.nameEdit" autocomplete="off" #name="ngModel">
+        </div>
+
+        <div class="form-group">
+            <label for="unit_measure">Unidad de Medida:</label>
+            <input type="text" class="form-control" placeholder="Ingresa la unidad de medida" value="{{materialsEdit.unit_measureEdit}}" name="unit_measureEdit" [ngModel]="materialsEdit.unit_measureEdit" autocomplete="off" #unit_measure="ngModel">
+        </div>
+
+        <div class="form-group">
+            <label for="price">Precio:</label>
+            <input type="number" class="form-control" placeholder="Ingresa el precio" name="priceEdit" value="{{materialsEdit.priceEdit}}" [ngModel]="materialsEdit.priceEdit" autocomplete="off" #price="ngModel">
+        </div>
+
+        <div class="form-group">
+            <label for="stock">Stock:</label>
+            <input type="number" class="form-control" placeholder="Ingresa el stock" name="stockEdit"  value="{{materialsEdit.stockEdit}}" [ngModel]="materialsEdit.stockEdit" autocomplete="off" #stock="ngModel">
+        </div>
+        
+        <button class="btn btn-primary">Editar</button>
+    </form> 
+</div>
